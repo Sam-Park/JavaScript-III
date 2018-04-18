@@ -32,7 +32,83 @@
   * should inherit destroy() from GameObject through CharacterStats
   * should inherit takeDamage() from CharacterStats
 */
+
+function GameObject(attributes){
+  this.createdAt = attributes.createdAt;
+  this.dimensions = attributes.dimensions;
+}
+GameObject.prototype.destroy = function() {
+  return `${this.name} was destroyed.`;
+};
  
+// end GameObject
+
+// start CharacterStats
+function CharacterStats(charAttributes) {
+  GameObject.call(this, charAttributes);
+  this.hp = charAttributes.hp;
+  this.name = charAttributes.name;
+};
+
+CharacterStats.prototype = Object.create(GameObject.prototype);
+CharacterStats.prototype.takeDamage = function () {
+  return `${this.name} took damage.`;
+};
+// end CharacterStats
+
+// start Humanoid
+function Humanoid(humAttributes){
+  CharacterStats.call(this, humAttributes);
+  this.faction = humAttributes.faction;
+  this.weapons = humAttributes.weapons;
+  this.language = humAttributes.language;
+};
+Humanoid.prototype = Object.create(CharacterStats.prototype);
+Humanoid.prototype.greet = function () {
+  return `${this.name} offers a greeting in ${this.language}`;
+};
+
+//end Humanoid
+
+// start Hero
+
+function Hero(heroAttributes){
+Humanoid.call(this, heroAttributes);
+
+};
+Hero.prototype = Object.create(Humanoid.prototype);
+Hero.prototype.basicAttack = function () {
+  theVillain.hp += -20;
+  if (theVillain.hp <= 0) {
+    return `${theVillain.destroy()} 
+    ${this.name} says: "My name is ${this.name} and I have vanquished my greatest foe, ${theVillain.name}!"`;
+  }
+  else {
+   return  `The Hit lands, ${theVillain.name} has lost 20 hp, he only has ${theVillain.hp}hp left!`;
+  }
+  }
+
+// end hero
+
+// start villain
+
+function Villain(vilAttributes){
+  Humanoid.call(this, vilAttributes);
+  
+  };
+  Villain.prototype = Object.create(Humanoid.prototype);
+  Villain.prototype.basicAttack = function () {
+    mrHero.hp += -10;
+    if (mrHero.hp <= 0) {
+      return mrHero.destroy();
+    }
+    else {
+     return  `The Hit lands, ${mrHero.name} has lost 10 hp, he only has ${mrHero.hp}hp left!`;
+    }
+    };
+   
+// end Villain
+
 /*
   * Inheritance chain: Humanoid -> CharacterStats -> GameObject
   * Instances of Humanoid should have all of the same properties as CharacterStats and GameObject.
@@ -41,7 +117,18 @@
 
 //Test you work by uncommenting these 3 objects and the list of console logs below:
 
-/*
+  const mrHero = new Hero({
+    name: 'Mr. Hero',
+    hp: 100
+  })
+
+  const theVillain = new Villain({
+    name: 'Evil guy',
+    hp: 90,
+  })
+
+
+
   const mage = new Humanoid({
     createdAt: new Date(),
     dimensions: {
@@ -102,7 +189,22 @@
   console.log(archer.greet()); // Lilith offers a greeting in Elvish.
   console.log(mage.takeDamage()); // Bruce took damage.
   console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
-*/
+  console.log(mrHero.basicAttack());
+  console.log(theVillain.basicAttack());
+  console.log(theVillain.basicAttack());
+  console.log(mrHero.basicAttack());
+  console.log(theVillain.basicAttack());
+  console.log(theVillain.basicAttack());
+  console.log(theVillain.basicAttack());
+  console.log(theVillain.basicAttack());  
+  console.log(theVillain.basicAttack()); 
+  console.log(theVillain.basicAttack());  
+  console.log(theVillain.basicAttack());
+  console.log(mrHero.basicAttack());
+  console.log(mrHero.basicAttack());
+  console.log(mrHero.basicAttack());
+  
+
 
   // Stretch task: 
   // * Create Villian and Hero classes that inherit from the Humanoid class.  
